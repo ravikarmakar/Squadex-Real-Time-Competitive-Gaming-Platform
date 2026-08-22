@@ -15,7 +15,7 @@ import {
 
 export const OrganizerNotificationsPage: React.FC = () => {
     const { user } = useCurrentUser();
-    const orgId = user?.orgId;
+    const orgId = typeof user?.orgId === "object" && user?.orgId !== null ? user.orgId._id : (user?.orgId as string | undefined);
 
     const { data: notifications, isLoading } = useOrgNotificationsQuery(orgId as string);
     const readMutation = useMarkNotificationReadMutation();

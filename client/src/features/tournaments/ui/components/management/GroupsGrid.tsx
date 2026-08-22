@@ -1,12 +1,12 @@
 import { Loader2, SearchX, RotateCcw } from "lucide-react";
-import { useGroupsGrid } from "@/features/tournaments/hooks";
+import { useGroupsContext } from "@/features/tournaments/context/TournamentGroupsContext";
 import { GroupGridView } from "./groups/GroupGridView";
 import { GroupDetailsView } from "./groups/GroupDetailsView";
 import { GroupsGridDialogs } from "./groups/GroupsGridDialogs";
 
 interface GroupsGridProps {
-    roundId: string;
-    eventId: string;
+    roundId?: string;
+    eventId?: string;
     search?: string;
     statusFilter?: string;
     sortBy?: string;
@@ -14,81 +14,16 @@ interface GroupsGridProps {
 }
 
 export const GroupsGrid = ({
-    roundId,
-    eventId,
-    search: externalSearch,
-    statusFilter: externalStatusFilter,
-    sortBy: externalSortBy,
+    search,
+    statusFilter,
     onResetFilters
 }: GroupsGridProps) => {
     const {
-        currentPage,
-        activeRoundTab,
         groups,
         isLoading,
-        totalPages,
-        totalGroups,
         selectedGroupId,
-        setSelectedGroupId,
-        leaderboard,
-        currentGroup,
-        effectiveTotalMatch,
-        isGroupCompleted,
-        roundMatches,
-        qualifyingTeams,
-        isResultsMode,
-        setIsResultsMode,
-        tempResults,
-        isSaving,
-        isConfirmOpen,
-        setIsConfirmOpen,
-        isResetConfirmOpen,
-        setIsResetConfirmOpen,
-        editingGroup,
-        isEditOpen,
-        setIsEditOpen,
-        chatGroup,
-        isChatOpen,
-        setIsChatOpen,
-        inviteGroup,
-        isInviteOpen,
-        setIsInviteOpen,
-        deletingGroup,
-        isDeleteOpen,
-        setIsDeleteOpen,
-        mergeTeam,
-        isMergeOpen,
-        setIsMergeOpen,
-        openEditModal,
-        openChatModal,
-        openInviteModal,
-        openDeleteModal,
-        openMergeModal,
-        handlePageChange,
-        handleMergeToGroup,
-        rounds,
-        selectedPairing,
-        setSelectedPairing,
-        search,
-        statusFilter,
-        handleNextGroup,
-        handlePreviousGroup,
-        hasNextGroup,
-        hasPreviousGroup,
-        handleSubmitResults,
-        handleResultChange,
-        handleConfirmSubmit,
-        handleResetGroup,
-        handleConfirmReset,
-        currentGroupIndex,
-        totalGroupsCount,
-        isLeaderboardLoading,
         isFetching,
-    } = useGroupsGrid({ roundId, eventId, externalSearch, externalStatusFilter, externalSortBy });
-
-    const currentRound = rounds.find((r: any) => r._id === roundId);
-
-
+    } = useGroupsContext();
 
     if ((isLoading || isFetching) && groups.length === 0 && !selectedGroupId) {
         return (
@@ -136,88 +71,8 @@ export const GroupsGrid = ({
 
     return (
         <div className="space-y-6">
-            {selectedGroupId ? (
-                <GroupDetailsView
-                    currentGroup={currentGroup}
-                    leaderboard={leaderboard}
-                    setSelectedGroupId={setSelectedGroupId}
-                    effectiveTotalMatch={effectiveTotalMatch}
-                    isGroupCompleted={isGroupCompleted}
-                    qualifyingTeams={qualifyingTeams}
-                    isResultsMode={isResultsMode}
-                    setIsResultsMode={setIsResultsMode}
-                    handleSubmitResults={handleSubmitResults}
-                    isSaving={isSaving}
-                    openInviteModal={openInviteModal}
-                    tempResults={tempResults}
-                    handleResultChange={handleResultChange}
-                    activeRoundTab={activeRoundTab}
-                    openMergeModal={openMergeModal}
-                    selectedPairing={selectedPairing}
-                    setSelectedPairing={setSelectedPairing}
-                    onNextGroup={handleNextGroup}
-                    onPreviousGroup={handlePreviousGroup}
-                    hasNextGroup={hasNextGroup}
-                    hasPreviousGroup={hasPreviousGroup}
-                    openEditModal={openEditModal}
-                    openDeleteModal={openDeleteModal}
-                    onResetGroup={handleResetGroup}
-                    openChatModal={openChatModal}
-                    currentGroupIndex={currentGroupIndex}
-                    totalGroupsCount={totalGroupsCount}
-                    isLoading={isLeaderboardLoading}
-
-                />
-            ) : (
-                <GroupGridView
-                    groups={groups}
-                    roundMatches={roundMatches}
-                    setSelectedGroupId={setSelectedGroupId}
-                    openEditModal={openEditModal}
-                    openDeleteModal={openDeleteModal}
-                    openChatModal={openChatModal}
-                    openInviteModal={openInviteModal}
-                    totalGroups={totalGroups}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    isLoading={isLoading}
-                    handlePageChange={handlePageChange}
-                    onMergeToGroup={handleMergeToGroup}
-                    activeRoundTab={activeRoundTab}
-                    round={currentRound}
-                    onResetGroup={handleResetGroup}
-                />
-            )}
-
-            <GroupsGridDialogs
-                eventId={eventId}
-                roundId={roundId}
-                activeRoundTab={activeRoundTab}
-                isEditOpen={isEditOpen}
-                setIsEditOpen={setIsEditOpen}
-                editingGroup={editingGroup}
-                isDeleteOpen={isDeleteOpen}
-                setIsDeleteOpen={setIsDeleteOpen}
-                deletingGroup={deletingGroup}
-                isChatOpen={isChatOpen}
-                setIsChatOpen={setIsChatOpen}
-                chatGroup={chatGroup}
-                isInviteOpen={isInviteOpen}
-                setIsInviteOpen={setIsInviteOpen}
-                inviteGroup={inviteGroup}
-                isConfirmOpen={isConfirmOpen}
-                setIsConfirmOpen={setIsConfirmOpen}
-                isResetConfirmOpen={isResetConfirmOpen}
-                setIsResetConfirmOpen={setIsResetConfirmOpen}
-                currentGroup={currentGroup}
-                effectiveTotalMatch={effectiveTotalMatch}
-                handleConfirmSubmit={handleConfirmSubmit}
-                handleConfirmReset={handleConfirmReset}
-                isSaving={isSaving}
-                isMergeOpen={isMergeOpen}
-                setIsMergeOpen={setIsMergeOpen}
-                mergeTeam={mergeTeam}
-            />
+            {selectedGroupId ? <GroupDetailsView /> : <GroupGridView />}
+            <GroupsGridDialogs />
         </div>
     );
 };

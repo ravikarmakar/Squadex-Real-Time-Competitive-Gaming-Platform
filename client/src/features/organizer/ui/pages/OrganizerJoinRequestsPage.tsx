@@ -15,7 +15,7 @@ import { JoinRequest } from "../../types";
 export const OrganizerJoinRequestsPage = () => {
     const [page, setPage] = useState(1);
     const { user } = useCurrentUser();
-    const orgId = user?.orgId;
+    const orgId = typeof user?.orgId === "object" && user?.orgId !== null ? user.orgId._id : (user?.orgId as string | undefined);
 
     const { data: joinRequestsData, isLoading } = useOrgJoinRequestsQuery(orgId as string, page);
     const joinRequests = joinRequestsData?.data;
@@ -32,7 +32,7 @@ export const OrganizerJoinRequestsPage = () => {
                 onSuccess: () => {
                     toast.success(`Request ${action} successfully`);
                 },
-                onError: (error: any) => {
+                onError: (error: Error | { message?: string }) => {
                     toast.error(error.message || `Failed to ${action} request`);
                 }
             }

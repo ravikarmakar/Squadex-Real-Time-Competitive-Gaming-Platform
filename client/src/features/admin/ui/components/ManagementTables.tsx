@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useManagement } from "../../hooks/useManagement";
+import { useManagement, ManagementItem } from "../../hooks/useManagement";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -60,7 +60,7 @@ const ManagementTables = () => {
                                     <td colSpan={3} className="px-6 py-12 text-center text-gray-500">No results found.</td>
                                 </tr>
                             ) : (
-                                data.map((item) => (
+                                data.map((item: ManagementItem) => (
                                     <tr key={item._id} className="hover:bg-white/[0.02] transition-colors group">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">

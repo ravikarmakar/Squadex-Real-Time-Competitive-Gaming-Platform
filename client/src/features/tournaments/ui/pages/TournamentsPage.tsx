@@ -23,7 +23,8 @@ const OrganizerTournaments: React.FC = () => {
   const { user } = useCurrentUser();
   const navigate = useNavigate();
 
-  const { data: orgEvents = [], isLoading } = useGetOrgTournamentsQuery(user?.orgId ? user.orgId : (skipToken as unknown as string));
+  const orgIdStr = typeof user?.orgId === "object" && user?.orgId !== null ? user.orgId._id : user?.orgId;
+  const { data: orgEvents = [], isLoading } = useGetOrgTournamentsQuery(orgIdStr ? orgIdStr : (skipToken as unknown as string));
 
   const [search, setSearch] = useState("");
   const [gameFilter, setGameFilter] = useState("all");

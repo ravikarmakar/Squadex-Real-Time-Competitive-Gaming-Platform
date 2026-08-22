@@ -6,7 +6,7 @@ import { Round, RoundTabType } from "@/features/tournaments/types";
 
 interface RoundsSidebarProps {
     isLoading: boolean;
-    event: any;
+    event?: unknown;
     rounds: Round[];
     filteredSidebarItems: Round[];
     selectedRoundId: string | null;
@@ -14,9 +14,9 @@ interface RoundsSidebarProps {
     isSidebarCollapsed: boolean;
     setIsSidebarCollapsed: (collapsed: boolean) => void;
     activeRoundTab: RoundTabType;
-    setActionRound: (round: Round) => void;
-    setIsEditRoundOpen: (open: boolean) => void;
-    setIsResetRoundOpen: (open: boolean) => void;
+    setActionRound?: (round: Round) => void;
+    setIsEditRoundOpen?: (open: boolean) => void;
+    setIsResetRoundOpen?: (open: boolean) => void;
 }
 
 export const RoundsSidebar: React.FC<RoundsSidebarProps> = ({
@@ -29,9 +29,6 @@ export const RoundsSidebar: React.FC<RoundsSidebarProps> = ({
     isSidebarCollapsed,
     setIsSidebarCollapsed,
     activeRoundTab,
-    setActionRound,
-    setIsEditRoundOpen,
-    setIsResetRoundOpen,
 }) => {
     return (
         <div
@@ -57,17 +54,9 @@ export const RoundsSidebar: React.FC<RoundsSidebarProps> = ({
                         isSelected={selectedRoundId === round._id}
                         isSidebarCollapsed={isSidebarCollapsed}
                         onSelect={setSelectedRoundId}
-                        onEditClick={(r) => {
-                            setActionRound(r);
-                            setIsEditRoundOpen(true);
-                        }}
-                        onDeleteClick={(r) => {
-                            setActionRound(r);
-                            setIsResetRoundOpen(true);
-                        }}
                     />
                 ))}
-                {!isLoading && event && filteredSidebarItems.length === 0 && (
+                {!isLoading && Boolean(event) && filteredSidebarItems.length === 0 && (
                     <div className="text-sm text-gray-500 text-center py-8">
                         {isSidebarCollapsed ? "Empty" : `No ${activeRoundTab === 'invited-tournament' ? 'invited' : 'main'} rounds found.`}
                     </div>
